@@ -4,141 +4,87 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace miscrosoft_wjq_homework
+namespace ConsoleApp1
 {
-    class Complex
-
+    public class Complex
     {
-
-        public double real;
-
-        public double imaginary;
-
-        public Complex(double real, double imaginary)     
-
-        {
-
-            this.real = real;
-
-            this.imaginary = imaginary;
-
+        private double sb;
+        private double xb;
+        public Complex(double sb, double xb)
+        {//定义新数据类型复数
+            this.sb = sb;
+            this.xb = xb;
         }
-       
-
-        
-
-        public static Complex operator +(Complex c1, Complex c2)
-
+        public static Complex operator +(Complex a, Complex b)
         {
-
-            return new Complex(c1.real + c2.real, c1.imaginary + c2.imaginary);
-
+            double x = a.sb + b.sb;
+            double y = a.xb + b.xb;
+            Complex result = new Complex(x, y);
+            return result;
         }
-
-        
-
-        public static Complex operator -(Complex c1, Complex c2)
-
+        public static Complex operator -(Complex a, Complex b)
         {
-
-            return new Complex(c1.real - c2.real, c1.imaginary - c2.imaginary);
-
+            double x = a.sb - b.sb;
+            double y = a.xb - b.xb;
+            Complex result = new Complex(x, y);
+            return result;
         }
-        
-
-        public static Complex operator *(Complex c1, Complex c2)
-
+        public static Complex operator *(Complex a, Complex b)
         {
-
-            return new Complex(c1.real * c2.real - c1.imaginary * c2.imaginary, c1.real * c2.imaginary + c1.imaginary * c2.real);
-
-        }
-
-        
-
-        public static Complex operator /(Complex c1, Complex c2)
-
-        {
-
-            double cd = c2.real * c2.real + c2.imaginary * c2.imaginary;
-
-            return new Complex((c1.real * c2.real + c1.imaginary * c2.imaginary) / cd, (c1.imaginary * c2.real - c1.real * c2.imaginary) / cd);
-
-        }
-       
-
-
-
-        public override string ToString()
-
-        {
-
-            return (String.Format("{0} + {1}i", real, imaginary));
-
-        }
-
-    }
-
-    class TestComplex
-
-    {
-
-        static void Main()
-
-        {
-            Console.WriteLine("please enter a real number:");
-            int a =  Console.Read();
-            Console.WriteLine("please enter a imaginary number:");
-            int b = Console.Read();
-            Console.WriteLine("please enter a real number:");
-            int c = Console.Read();
-            Console.WriteLine("please enter a imaginary number:");
-            int d = Console.Read();
-
-            Complex num1 = new Complex(a, b);
             
-            Complex num2 = new Complex(c, d);
-
-            Complex sum = num1 + num2;               
-
-            Complex sub = num1 - num2;               
-
-            Complex multiplication = num1 * num2;    
-
-            Complex division = num1 / num2;          
+            double x = a.sb * b.sb - a.xb * b.xb;
+            double y = a.sb * b.xb + a.xb * b.sb;
+            Complex result = new Complex(x,y);
+            return result;
+        }
+        public static Complex operator /(Complex a, Complex b)
+        {//分母实数化
             
-
-            Console.WriteLine("第一个复数:  {0}", num1);
-
-            Console.WriteLine("第二个复数: {0}", num2);
-
-            Console.WriteLine("复数和: {0}", sum);
-
-            Console.WriteLine("复数差: {0}", sub);
-
-            Console.WriteLine("复数积: {0}", multiplication);
-
-            Console.WriteLine("复数商: {0}", division);
-
-            Console.WriteLine("please enter a real number:");
-            int g = Console.Read();
-            Console.WriteLine("please enter a imaginary number:");
-            int e = Console.Read();
-
-            Console.WriteLine("please enter a  number as the power:");
-            int f = Console.Read();
-
-            Complex num3 = new Complex(g, e);
-            
-            for (int i = 1; i <= f;i++)
-            {
-                Complex power = num3 * num3;
-                
+            double m = b.sb;
+            double n = -b.xb;
+            Complex temp = new Complex(m, n);
+            double x=0, y=0;
+            Complex result = new Complex(x,y);
+            result = a * temp;//分子计算调用复数乘法运算方法
+            x = x / (b.sb * b.sb + b.xb * b.xb);
+            y = y / (b.sb * b.sb + b.xb * b.xb);
+            return result;
+        }
+        public static int Pl(int m, int n)
+        {//即计算排列数A(m,n)的结果
+            int s = 1;
+            for (int i = 0; i < n; i++)
+                s *= (m - i);
+            return s;
+        }
+        public static int zh(int m, int n)
+        {//即计算组合数C(m,n)的结果
+            return Pl(m, n) / Pl(n, n);
+        }
+        public static Complex Pow(Complex a, int b)
+        {//请输入正整数b
+            double x=0, y=0;
+            if (b == 1)
+                return a;
+            else
+            {//利用二项式定理完成计算
+                for (int i = 0; i <= b; i++)
+                {
+                    double temp = zh(b, i) * Math.Pow(a.sb , (double)(b - i) * Math.Pow(a.xb , (double)i) * Math.Pow((-1) , (i / 2)));
+                    if (i % 2 == 0)
+                        x += temp;
+                    else
+                        y += temp;
+                }
+                Complex result = new Complex(x, y);
+                return result;
             }
-            
-
-            Console.WriteLine("乘方是: {0}", power);
         }
-
+    }
+        class Program
+    {
+        static void Main(string[] args)
+        {
+        }
     }
 }
